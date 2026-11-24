@@ -46,6 +46,35 @@ th,td{padding:7px 10px}th{font-size:11.5px;font-weight:600;color:var(--mut);back
 .dz{border-color:var(--btn);border-radius:12px;padding:26px}.dz.on{border-color:var(--acc)}
 .sl{padding:10px;font-size:13px}.dr .bx{padding:18px 22px}
 @media(max-width:800px){main{padding:0 14px 20px}header{padding:14px}}
+
+/* ===== skin 2: gọn hơn, màu cam Natcom nổi bật ===== */
+:root{--bar:#F7941D;--or1:#F7941D;--or2:#FBB040;--or3:#FFE7C2;--or4:#FFF6E8;--orink:#7A4300}
+[data-theme=dark]{--bar:#F7B04D;--or3:#4A3410;--or4:#2A2214;--orink:#FBC36B}
+body{font-size:13px}
+.nv{width:208px;padding:14px 10px;background:linear-gradient(180deg,#14213D 0%,#101A31 100%);border-top:4px solid var(--or1)}
+.lg{margin:0 4px 14px}.nl{width:34px;height:34px}.lg b{font-size:13.5px}
+.nv h6{margin:14px 8px 4px;font-size:10.5px;color:#FBB040}
+.nv a{padding:7px 10px;border-radius:8px;font-size:13px;margin:1px 0}.nv a.on{background:linear-gradient(90deg,#F7941D,#FBB040);color:#14213D;box-shadow:0 2px 8px #F7941D55}
+header{margin:14px 20px 10px;padding:12px 18px;border-radius:12px;background:linear-gradient(100deg,#F7941D 0%,#FBB040 58%,#FFD99B 100%);color:#14213D;box-shadow:0 4px 14px #F7941D33}
+h1{font-size:20px;color:#14213D}header small{font-size:12.5px;color:#3D2A08}
+header button,header .bt label{padding:6px 13px;font-size:12.5px;background:#fff;border-color:#fff;color:#14213D}header button.p{background:#14213D;border-color:#14213D;color:#fff}header button:disabled{opacity:.55}
+[data-theme=dark] header{background:linear-gradient(100deg,#8A4B06,#B8700F 60%,#D9953A)}
+main{padding:0 20px 20px;max-width:1700px}
+.card{padding:12px 14px;margin-bottom:11px;border-radius:12px;box-shadow:0 1px 3px #1B1F2A10}
+h3{font-size:14px;display:flex;align-items:center;gap:8px;margin-bottom:10px}h3::before{content:"";width:4px;height:15px;border-radius:2px;background:var(--or1);flex:none}h3 em{order:-1}h3:has(em)::before{display:none}h3 small{font-weight:500;font-size:11.5px}
+.k{gap:10px;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));margin-bottom:11px}.k>div{padding:11px 14px;border-top:3px solid var(--or1);border-left-width:1px;border-left-color:var(--line);background:linear-gradient(180deg,var(--or4),var(--card) 55%)}
+.k .w{border-top-color:var(--bad);border-left-color:var(--line)}.k .o{border-top-color:var(--ok);border-left-color:var(--line)}
+.k b{font-size:22px}.k span{font-size:11px;color:var(--orink)}
+.sm .k b{font-size:16px}
+.br{font-size:12.5px;margin:5px 0}.br i{height:12px}.br u{background:linear-gradient(90deg,#F7941D,#FBB040)}
+th{background:var(--or3);color:var(--orink);border-bottom:2px solid var(--or1);font-size:11.5px}th,td{padding:5px 9px}tr.tr:hover td,tbody tr:hover td{background:var(--or4)}
+button,select,input{font-size:12.5px;padding:6px 13px}button:hover{border-color:var(--or1);color:var(--orink)}button.p{background:linear-gradient(90deg,#F7941D,#FBB040);border-color:#F7941D;color:#14213D}
+.pl button{padding:4px 12px}.pl button.on{background:var(--or1);color:#14213D;border-color:var(--or1);font-weight:600}
+.cat{padding:9px 11px;border-top:3px solid var(--or2)}.cat b{font-size:17px}.cat.on{box-shadow:0 0 0 2px var(--or1)}
+h3 em{background:var(--or1);color:#14213D}.dz{background:var(--or4);border-color:var(--or2)}.dz:hover,.dz.on{border-color:var(--or1)}
+.al{background:var(--or4);border:1px solid var(--or3)}.lv.warn{background:var(--or3);color:var(--orink)}
+.dr .bx{padding:14px 18px}.tw{border-color:var(--or3)}
+.nv::-webkit-scrollbar{width:6px}
 @media(max-width:1000px){.two{grid-template-columns:1fr}}
 @media(max-width:800px){.nv{display:none}}</style></head><body>
 <aside class="nv"><div class="lg"><svg class="nl" viewBox="0 0 48 48" aria-label="natcom"><circle cx="24" cy="24" r="24" fill="#F7941D"/><text x="24" y="28" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-weight="700" font-size="11.5" fill="#fff">natcom</text></svg><div><b>Tồn kho các chi nhánh</b></div></div><div id="menu"></div><div class="ft">Xử lý ngay trên máy,<br>không gửi dữ liệu đi đâu</div></aside>
