@@ -6,7 +6,28 @@
    Sheet "PhienChung": mỗi ngày chốt gồm nhiều dòng (dữ liệu nén cắt khúc) – đừng sửa tay. */
 var SHEET = 'PhienChung', CHUNK = 45000;
 
-function doGet() {
+function api_(p) {
+  var out = function (o) { return ContentService.createTextOutput(JSON.stringify(o)).setMimeType(ContentService.MimeType.JSON); };
+  try {
+    var key = PropertiesService.getScriptProperties().getProperty('KEY');
+    if (key && String(p.key || '') !== key) return out({ ok: false, error: 'Sai mật khẩu' });
+    var a = p.args || [], fn = p.fn;
+    if (fn === 'listSnaps') return out({ ok: true, data: listSnaps() });
+    if (fn === 'loadSnap') return out({ ok: true, data: loadSnap(a[0]) });
+    if (fn === 'saveSnap') return out({ ok: true, data: saveSnap(a[0], a[1]) });
+    return out({ ok: false, error: 'Hàm không hợp lệ' });
+  } catch (e) { return out({ ok: false, error: String(e.message || e) }); }
+}
+function doPost(e) {
+  var b = {}; try { b = JSON.parse(e.postData.contents); } catch (x) {}
+  return api_(b);
+}
+function doGet(e) {
+  if (e && e.parameter && e.parameter.fn) {
+    var p = { fn: e.parameter.fn, key: e.parameter.key, args: [] };
+    try { p.args = JSON.parse(e.parameter.args || '[]'); } catch (x) {}
+    return api_(p);
+  }
   return HtmlService.createHtmlOutputFromFile('Index')
     .setTitle('Tồn kho các chi nhánh')
     .addMetaTag('viewport', 'width=device-width, initial-scale=1')
@@ -73,3 +94,6 @@ function loadSnap(id) {
 }
 /* Chạy thử 1 lần trong trình soạn thảo để cấp quyền Sheet/Drive. */
 function authorize() { return ss_().getUrl(); }
+
+/* Tuỳ chọn: đặt mật khẩu cho bản GitHub – chạy 1 lần, sửa 'matkhau' rồi Run. */
+function datMatKhau() { PropertiesService.getScriptProperties().setProperty('KEY', 'matkhau'); }
