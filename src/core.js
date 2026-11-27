@@ -75,6 +75,14 @@ var ACC = /(^|[^a-z])(cap|cable|day|wire|kit|ga|kep|clamp|connector|chau|bulong|
   
 const CC={};NT.fold=fold;NT.cls=(name,grp)=>{const key=name+'\u0001'+grp;if(CC[key])return CC[key];const f=fold(name).replace(/[_\/]+/g,' ');let c=null;for(let i=0;i<CATS.length;i++)if(CATS[i][3](f)){c=CATS[i];break}
  let vd='';for(const x of VEND)if(x[1].test(f)){vd=x[0];break}const dom=domOfGroup(grp);let k=c?c[0]:'oth';if(c&&dom!=='kv'&&c[4]!==dom&&c[4]!=='kv'&&!NEUTRAL.test(c[0]))k=XMAP[c[0]+'@'+dom]||'gx';return CC[key]={k,vd}};
+NT.pl=(R,cfg)=>{const rate=+cfg.rate||1,Y=new Date(cfg.cut+'T00:00:00').getFullYear(),U=v=>(+v||0)/rate,tabs=[],add=(n,t,a)=>tabs.push({n,t,a}),mi=R.filter(r=>r.V===NV.mi);
+ add('TH','Tổng hợp tồn (USD): năm phân loại | loại hàng × nhóm VTTB',A('Năm | Loại hàng',P(R,r=>r.X+' | '+r.V,r=>r.W,r=>U(r.L))));
+ add('PL04','PL04 Thời điểm nhập kho (USD, theo số tiền bàn giao)',A('Loại hàng',P(R,r=>r.V,r=>r.ad,r=>U(r.M))));
+ add('PL7','PL7 Tồn hàng mới theo nhóm × thời điểm nhập (USD)',A('Nhóm VTTB',P(mi,r=>r.W,r=>r.ad,r=>U(r.M))));
+ const hd=P(R.filter(r=>r.u),r=>r.u,r=>r.V,r=>U(r.M));hd.rk.sort((a,b)=>Object.values(hd.m.get(b)).reduce((x,y)=>x+y,0)-Object.values(hd.m.get(a)).reduce((x,y)=>x+y,0));
+ add('PL_HopDong','PL hợp đồng: số hợp đồng không trùng × loại hàng (USD)',A('Số hợp đồng',hd));
+ [Y-1,Y].forEach(y=>add('PL_HD_'+y,'Hợp đồng nhập năm '+y+': hàng mới, trong/quá hạn (USD)',A('Số hợp đồng',P(mi.filter(r=>r.AB===y&&r.X===String(y)),r=>r.u||'(trống)',r=>r.ac,r=>U(r.M)))));
+ return tabs};
 NT.enr=rs=>rs.forEach(r=>{if(r.ck===undefined){const c=NT.cls(r.nm,r.W);r.ck=c.k;r.vd=c.vd;r.qn=r.V===NV.mi?r.q:0;r.qu=r.V===NV.noc?r.q:0}});
 NT.dev=(rs,rate)=>{const k=+rate||1,Q=(cat,vd,f)=>{let s=0;rs.forEach(r=>{if(r.ck===cat&&(vd==null||r.vd===vd))s+=f==='v'?r.L/k:f==='qn'?r.qn:f==='qu'?r.qu:r.q});return s},up=(c,vd)=>{const q=Q(c,vd);return q?Q(c,vd,'v')/q:0};
  const vends=['Huawei','ZTE','Nokia','Ericsson'].filter(v=>Q('bbu',v)+Q('rru',v)>0),antN=Q('ant',null,'qn'),antA=Q('ant')-Q('ant',null,'qu'),upA=up('ant');

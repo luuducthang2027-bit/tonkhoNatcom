@@ -14,7 +14,8 @@ function api_(p) {
     var a = p.args || [], fn = p.fn;
     if (fn === 'listSnaps') return out({ ok: true, data: listSnaps() });
     if (fn === 'loadSnap') return out({ ok: true, data: loadSnap(a[0]) });
-    if (fn === 'saveSnap') return out({ ok: true, data: saveSnap(a[0], a[1]) });
+    if (fn === 'saveSnap') return out({ ok: true, data: saveSnap(a[0], a[1], a[2]) });
+    if (fn === 'adminCheck') return out({ ok: true, data: adminCheck(a[0]) });
     return out({ ok: false, error: 'Hàm không hợp lệ' });
   } catch (e) { return out({ ok: false, error: String(e.message || e) }); }
 }
@@ -60,7 +61,21 @@ function find_(sh, cut) {
   for (var i = 0; i < v.length; i++) if (String(v[i][0]) === cut) { if (!first) first = i + 2; count++; }
   return { first: first, count: count };
 }
-function saveSnap(cut, txt) {
+function isAdmin_(pw) {
+  try {
+    var a = Session.getActiveUser().getEmail(), e = Session.getEffectiveUser().getEmail();
+    if (a && e && a === e) return true;
+  } catch (x) {}
+  var k = PropertiesService.getScriptProperties().getProperty('ADMIN_KEY');
+  return !!(k && String(pw || '') === k);
+}
+function adminCheck(pw) {
+  if (isAdmin_(pw)) return { ok: true };
+  var k = PropertiesService.getScriptProperties().getProperty('ADMIN_KEY');
+  return { ok: false, msg: k ? 'Sai mật khẩu admin.' : 'Chưa đặt mật khẩu admin: mở Apps Script, sửa và chạy hàm datMatKhauAdmin().' };
+}
+function saveSnap(cut, txt, pw) {
+  if (!isAdmin_(pw)) throw new Error('Cần đăng nhập admin để lưu phiên');
   cut = String(cut);
   if (!/^\d{4}-\d{2}-\d{2}$/.test(cut)) throw new Error('Ngày chốt không hợp lệ');
   var lock = LockService.getScriptLock(); lock.waitLock(30000);
@@ -97,3 +112,6 @@ function authorize() { return ss_().getUrl(); }
 
 /* Tuỳ chọn: đặt mật khẩu cho bản GitHub – chạy 1 lần, sửa 'matkhau' rồi Run. */
 function datMatKhau() { PropertiesService.getScriptProperties().setProperty('KEY', 'matkhau'); }
+
+/* Mật khẩu admin: sửa 'admin123' thành mật khẩu của anh rồi Run 1 lần. Admin mới thấy Nạp dữ liệu, Đối soát, Chưa phân loại và được lưu phiên. */
+function datMatKhauAdmin() { PropertiesService.getScriptProperties().setProperty('ADMIN_KEY', 'admin123'); }
